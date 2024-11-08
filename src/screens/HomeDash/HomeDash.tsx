@@ -23,6 +23,11 @@ export default function HomeDash() {
   const [userLocations, setUserLocations] = useState<TLocation[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  const setErrorWithTimeout = (message: string) => {
+    setErrorMessage(message);
+    setTimeout(() => setErrorMessage(""), 5000);
+  }
+
   const storeLocalData = async (key: string, value: any) => {
     try {
       await AsyncStorage.setItem(key, JSON.stringify(value));
@@ -59,7 +64,7 @@ export default function HomeDash() {
       setDefaultLocations(locationData);
     } catch (error) {
       console.error("[getDefaultLocations]", error);
-      setErrorMessage("Error fetching results for default locations");
+      setErrorWithTimeout("Unable to retrieve results for default locations");
     }
   }
 
@@ -70,8 +75,7 @@ export default function HomeDash() {
       const alreadyListed = userLocations.find(location => location.title === city);
 
       if (alreadyListed) {
-        setErrorMessage("This location is already in your list");
-        setTimeout(() => setErrorMessage(""), 5000);
+        setErrorWithTimeout("This location is already in your list");
         return;
       }
 
@@ -82,7 +86,7 @@ export default function HomeDash() {
       storeLocalData(USER_LOCATIONS_KEY, updatedUserLocations);
     } catch (error) {
       console.error("[addUserLocation]", error);
-      setErrorMessage("Error fetching results for the given location");
+      setErrorWithTimeout("Unable to find results for the given location");
     }
   }
 
