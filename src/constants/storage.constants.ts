@@ -1,0 +1,1 @@
+export const USER_LOCATIONS_KEY = 'userLocations';

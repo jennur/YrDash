@@ -10,14 +10,14 @@ export default function WeatherDetails({
   sunset,
   sunrise,
   humidity,
-  visibility
+  pressure
 }: TWeatherDetailsProps) {
   return (
     <View>
       <Detail title={"Sunrise"} value={sunrise}/>
       <Detail title={"Sunset"} value={sunset}/>
       <Detail title={"Humidity"} value={humidity}/>
-      <Detail title={"Visibility"} value={visibility}/>
+      <Detail title={"Pressure"} value={pressure}/>
     </View>
   )
 };

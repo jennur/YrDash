@@ -6,7 +6,7 @@ export const screenStyles = StyleSheet.create({
     flex: 1,
   },
   contentWrapper: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
     paddingVertical: 20
   },
   helloText: {

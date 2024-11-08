@@ -1,5 +1,16 @@
+import { RESPONSE_ERROR, RESPONSE_SUCCESS } from "../constants/status.constants";
+
+export type TCity = "trondheim" | "oslo" | "bergen" | "stavanger" | "kristiansand" | "tromsø" | "bodø" | "ålesund" | "berlin" | "paris" | "london" | "new york" | "los angeles" | "san francisco" | "tokyo" | "beijing";
+export type TLatLong = [number, number];
+
 export type TLocation = {
-  title: string;
+  units: {
+    temperature: string;
+    humidity: string;
+    pressure: string;
+    windSpeed: string;
+  }
+  title: TCity;
   temperature: {
     curr: number;
     min: number;
@@ -10,9 +21,14 @@ export type TLocation = {
     sunrise: string;
     sunset: string;
     humidity: number;
-    visibility: number;
+    pressure: number;
+    windSpeed: number;
   }
 }
 
-export type TLocationSummary = Pick<TLocation, 'title' | 'temperature'>;
+export type TLocationResponse = {
+  status: typeof RESPONSE_SUCCESS | typeof RESPONSE_ERROR;
+  message?: string;
+  data: TLocation;
+}
 

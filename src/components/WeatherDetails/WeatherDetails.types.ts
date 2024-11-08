@@ -1,6 +1,3 @@
-export type TWeatherDetailsProps = {
-  sunrise: string;
-  sunset: string;
-  humidity: number;
-  visibility: number;
-}
+import { TLocation } from "../../types/Location.types";
+
+export type TWeatherDetailsProps = TLocation["weather"];

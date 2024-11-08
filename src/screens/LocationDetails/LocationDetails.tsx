@@ -6,21 +6,24 @@ import {
   View,
   Button
 } from 'react-native';
-import {TLocation} from '../../types/Location.types';
 import WeatherDetails from '../../components/WeatherDetails/WeatherDetails';
 import Temperature from '../../components/Temperature/Temperature';
+import { screenStyles } from '../../assets/styles/screen.styles';
+import { TLocation } from '../../types/Location.types';
+import { TLocationDetailsRouteProp } from '../../types/screen.types';
+import { useNavigation } from '@react-navigation/native';
 
-export default function LocationDetails({navigation, route}: any) {
-
-  const location: TLocation = route.params;
+export default function LocationDetails({route}: {route: TLocationDetailsRouteProp}) {
+  const navigation = useNavigation();
+  const {location}: {location: TLocation} = route.params;
 
   return (
-    <SafeAreaView>
-      <View>
+    <SafeAreaView style={screenStyles.screenWrapper}>
+      <View style={screenStyles.contentWrapper}>
         <Button title="Back" onPress={() => navigation.goBack()} />
         <Text>{location.title}</Text>
       </View>
-      <ScrollView>
+      <ScrollView style={screenStyles.contentWrapper}>
         <Temperature weatherType={location.weatherType} temperature={location.temperature} />
         <WeatherDetails {...location.weather} />
       </ScrollView>

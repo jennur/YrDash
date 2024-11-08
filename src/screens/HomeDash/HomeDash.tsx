@@ -1,47 +1,124 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
   Text,
   View,
+  TextInput,
+  TouchableOpacity
 } from 'react-native';
-import LocationList from '../../components/LocationsList/LocationsList';
-import { TLocationSummary } from '../../types/Location.types';
+import LocationList from '../../components/LocationList/LocationList';
+import { TLocation, TLocationResponse } from '../../types/Location.types';
 import { screenStyles } from '../../assets/styles/screen.styles';
+import { getCurrentWeather } from '../../services/weather.service';
+import { TCity } from '../../types/Location.types';
 
-export default function HomeDash({navigation}: any) {
-  const mockLocations: TLocationSummary[] = [
-    {
-      title: 'Location 1',
-      temperature: {
-        curr: 25,
-        min: 20,
-        max: 30,
-      },
-    },
-    {
-      title: 'Location 2',
-      temperature: {
-        curr: 20,
-        min: 15,
-        max: 25,
-      },
-    },
-    {
-      title: 'Location 3',
-      temperature: {
-        curr: 30,
-        min: 25,
-        max: 35,
-      },
+import style from './HomeDash.styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { USER_LOCATIONS_KEY } from '../../constants/storage.constants';
+
+export default function HomeDash() {
+  const [city, setCity] = useState<string>("");
+  const [defaultLocations, setDefaultLocations] = useState<TLocation[]>([]);
+  const [userLocations, setUserLocations] = useState<TLocation[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const storeLocalData = async (key: string, value: any) => {
+    try {
+      await AsyncStorage.setItem(key, JSON.stringify(value));
+      console.info('[storeLocalData] Data successfully stored!');
+    } catch (error) {
+      console.error('[storeLocalData]', error);
     }
-  ]
+  }
+
+  const getLocalData = async (key: string) => {
+    try {
+      const data = await AsyncStorage.getItem(key);
+      return data ? JSON.parse(data) : null;
+    } catch (error) {
+      console.error('[getLocalData]', error);
+    }
+  }
+
+  const getDefaultLocations = async (): Promise<void> => {
+    const defaultCities: TCity[] = ["london", "new york", "tokyo"];
+    try {
+      // Get stored user locations
+      const storedUserLocations = await getLocalData(USER_LOCATIONS_KEY) || [];
+      setUserLocations(storedUserLocations);
+
+      // Get default locations
+      const locationResponse: TLocationResponse[] = await Promise.all(
+        defaultCities.map((name: TCity) => getCurrentWeather(name))
+      );
+      const locationData: TLocation[] = locationResponse.map(
+        (location: TLocationResponse) => location.data
+      );
+
+      setDefaultLocations(locationData);
+    } catch (error) {
+      console.error("[getDefaultLocations]", error);
+      setErrorMessage("Error fetching results for default locations");
+    }
+  }
+
+  const addUserLocation = async (): Promise<void> => {
+    setErrorMessage("");
+
+    try {
+      const alreadyListed = userLocations.find(location => location.title === city);
+
+      if (alreadyListed) {
+        setErrorMessage("This location is already in your list");
+        setTimeout(() => setErrorMessage(""), 5000);
+        return;
+      }
+
+      // Fetch and add user provided location to the UI, store it locally
+      const userLocation = await getCurrentWeather(city);
+      const updatedUserLocations = [userLocation?.data, ...userLocations];
+      setUserLocations(updatedUserLocations);
+      storeLocalData(USER_LOCATIONS_KEY, updatedUserLocations);
+    } catch (error) {
+      console.error("[addUserLocation]", error);
+      setErrorMessage("Error fetching results for the given location");
+    }
+  }
+
+  const handleCityInput = (city: string): void => {
+    // Remove all whitespace before/after and convert to lowercase before proceeding
+    city = city.trimEnd().trimStart().toLowerCase();
+    setCity(city);
+  }
+
+  useEffect(() => {
+    // Get default locations on load
+    getDefaultLocations();
+  }, [])
 
   return (
     <SafeAreaView style={screenStyles.screenWrapper}>
       <ScrollView style={screenStyles.contentWrapper}>
-        <Text>Home Dashboard</Text>
-        <LocationList locations={mockLocations} />
+        <View style={style.searchBar}>
+          <TextInput style={style.searchInput} onChangeText={handleCityInput}/>
+          <TouchableOpacity
+            onPress={addUserLocation}
+            style={style.searchButton}
+          >
+            <Text style={style.searchButtonText}>Search</Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <Text style={style.errorMessage}>{errorMessage}</Text>
+        </View>
+        {userLocations.length !== 0 && 
+          <LocationList title="Your locations" locations={userLocations} />
+        }
+
+        {defaultLocations.length !== 0 && 
+          <LocationList title="Popular locations" locations={defaultLocations} />
+        }
       </ScrollView>
     </SafeAreaView>
   )
