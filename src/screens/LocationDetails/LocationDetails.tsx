@@ -24,8 +24,9 @@ export default function LocationDetails({route}: {route: TLocationDetailsRoutePr
         <Temperature
           weatherSymbol={location.weather.symbol}
           temperature={location.temperature}
+          unit={location.units.temperature}
         />
-        <WeatherDetails {...location.weather} />
+        <WeatherDetails units={location.units} {...location.weather} />
       </ScrollView>
     </SafeAreaView>
   )
