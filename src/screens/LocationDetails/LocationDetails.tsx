@@ -21,7 +21,10 @@ export default function LocationDetails({route}: {route: TLocationDetailsRoutePr
         <PageHeader title={location.title} />
       </View>
       <ScrollView style={screenStyles.contentWrapper}>
-        <Temperature weatherType={location.weatherType} temperature={location.temperature} />
+        <Temperature
+          weatherSymbol={location.weather.symbol}
+          temperature={location.temperature}
+        />
         <WeatherDetails {...location.weather} />
       </ScrollView>
     </SafeAreaView>

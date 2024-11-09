@@ -20,7 +20,10 @@ export function parseLocationData(city: TCity, data: any): TLocationResponse {
 };
 
 function populateLocationData(city: TCity, data: any, units: any): TLocation {
-  const { instant: { details: instantDetails = {} }, next_6_hours: { details: next6HoursDetails = {} } } = data || {};
+  const instantDetails = data?.instant?.details || {};
+  const next6HoursDetails = data?.next_6_hours?.details || {};
+  const weatherSymbol = data?.next_1_hours?.summary?.symbol_code;
+
   return {
     title: city,
     units: {
@@ -30,12 +33,12 @@ function populateLocationData(city: TCity, data: any, units: any): TLocation {
       windSpeed: units?.wind_speed
     },
     temperature: {
-      curr: instantDetails?.air_temperature,
-      min: next6HoursDetails?.air_temperature_min,
-      max: next6HoursDetails?.air_temperature_max,
+      curr: Math.round(instantDetails?.air_temperature),
+      min: Math.round(next6HoursDetails?.air_temperature_min),
+      max: Math.round(next6HoursDetails?.air_temperature_max),
     },
-    weatherType: "Unknown",
     weather: {
+      symbol: weatherSymbol,
       sunrise: "N/A",
       sunset: "N/A",
       humidity: instantDetails?.relative_humidity,

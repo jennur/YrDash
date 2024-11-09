@@ -2,15 +2,21 @@ import React from 'react';
 import {
   Text,
   View,
+  Image
 } from 'react-native';
 import { TTemperatureProps } from './Temperature.types';
 
 import styles from './Temperature.styles';
 
-export default function Temperature({weatherType, temperature}: TTemperatureProps) {
+export default function Temperature({weatherSymbol, temperature}: TTemperatureProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.mainTempText}>{weatherType}</Text>
+      {weatherSymbol && 
+        <Image
+          style={styles.weatherSymbol}
+          source={{ uri: `https://github.com/metno/weathericons/blob/89e3173756248b4696b9b10677b66c4ef435db53/weather/png/${weatherSymbol}.png?raw=true`}}
+        />
+      }
       <Text style={styles.mainTemp}>{temperature.curr}°C</Text>
 
       <View style={styles.tempDetails}>

@@ -1,8 +1,6 @@
+import { TLocation } from "../../types/Location.types";
+
 export type TTemperatureProps = {
-  temperature: {
-    curr: number;
-    min: number;
-    max: number;
-  },
-  weatherType: string;
-}
+  weatherSymbol: TLocation["weather"]["symbol"],
+  temperature: TLocation["temperature"]
+};

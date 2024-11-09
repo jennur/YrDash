@@ -5,16 +5,20 @@ const style = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: 30,
+    padding: 10,
     backgroundColor: "#eaf9ff",
     marginBottom: 20,
     borderRadius: 20,
+  },
+  weatherSymbol: {
+    width: 100,
+    height: 100,
   },
   mainTempText: {
     fontSize: 20,
   },
   mainTemp: {
-    fontSize: 100,
+    fontSize: 90,
   },
   tempDetails: {
     flexDirection: "row",

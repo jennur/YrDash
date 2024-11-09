@@ -16,8 +16,8 @@ export type TLocation = {
     min: number;
     max: number;
   };
-  weatherType: string;
   weather: {
+    symbol: string;
     sunrise: string;
     sunset: string;
     humidity: number;
