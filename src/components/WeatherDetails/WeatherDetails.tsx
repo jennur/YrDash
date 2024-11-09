@@ -6,6 +6,8 @@ import {
 import { TWeatherDetailsProps } from './WeatherDetails.types';
 import Detail from './Detail/Detail';
 
+import styles from './WeatherDetails.styles';
+
 export default function WeatherDetails({
   sunset,
   sunrise,
@@ -13,11 +15,11 @@ export default function WeatherDetails({
   pressure
 }: TWeatherDetailsProps) {
   return (
-    <View>
+    <View style={styles.container}>
       <Detail title={"Sunrise"} value={sunrise}/>
       <Detail title={"Sunset"} value={sunset}/>
       <Detail title={"Humidity"} value={humidity}/>
-      <Detail title={"Pressure"} value={pressure}/>
+      <Detail title={"Air Pressure"} value={pressure}/>
     </View>
   )
 };

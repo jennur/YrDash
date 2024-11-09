@@ -22,10 +22,14 @@ export default function HomeDash() {
   const [defaultLocations, setDefaultLocations] = useState<TLocation[]>([]);
   const [userLocations, setUserLocations] = useState<TLocation[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
-
+  const [errorTimeout, setErrorTimeout] = useState<NodeJS.Timeout | null>(null);
+  
   const setErrorWithTimeout = (message: string) => {
+    if (errorTimeout) clearTimeout(errorTimeout);
     setErrorMessage(message);
-    setTimeout(() => setErrorMessage(""), 5000);
+
+    const timeout = setTimeout(() => setErrorMessage(""), 5000);
+    setErrorTimeout(timeout);
   }
 
   const storeLocalData = async (key: string, value: any) => {
@@ -34,6 +38,7 @@ export default function HomeDash() {
       console.info('[storeLocalData] Data successfully stored!');
     } catch (error) {
       console.error('[storeLocalData]', error);
+      setErrorMessage("Unable to store data locally");
     }
   }
 

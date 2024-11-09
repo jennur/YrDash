@@ -5,11 +5,13 @@ import {
 } from 'react-native';
 import { TDetailProps } from './Detail.types';
 
+import styles from './Detail.styles';
+
 export default function Detail({title, value}: TDetailProps) {
   return (
-    <View>
-      <Text>{title}</Text>
-      <Text>{value}</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.value}>{value}</Text>
     </View>
   )
 };
