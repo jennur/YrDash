@@ -9,14 +9,17 @@ export async function getCurrentWeather(location: string):Promise<TLocationRespo
     const city = location as TCity;
     const [lat, long]: TLatLong = nameToGeoCoords[city];
 
-    const response = await axios.get(
+    const weatherResponse = await axios.get(
       `https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${lat}&lon=${long}`
     );
 
-    if (response.status !== 200) throw new Error("No results found");;
-    return parseLocationData(city, response.data);
+    const sunResponse = await axios.get(
+      `https://api.met.no/weatherapi/sunrise/3.0/sun?lat=${lat}&lon=${long}`
+    );
+
+    return parseLocationData(city, weatherResponse?.data, sunResponse?.data?.properties);
   } catch (error: any) {
     console.error("[getCurrentWeather]", error);
-    return parseLocationData(location as TCity, {});
+    return parseLocationData(location as TCity, {}, {});
   }
 }
