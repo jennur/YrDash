@@ -13,7 +13,7 @@ import { screenStyles } from '../../assets/styles/screen.styles';
 import { getCurrentWeather } from '../../services/weatherService/weatherService';
 import { TCity } from '../../types/Location.types';
 
-import style from './HomeDash.styles';
+import style from './Home.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { USER_LOCATIONS_KEY } from '../../constants/storage.constants';
 
@@ -117,6 +117,7 @@ export default function HomeDash() {
           <TextInput
             style={style.searchInput}
             onChangeText={handleCityInput}
+            testID="cityInput"
           />
           <TouchableOpacity
             onPress={addUserLocation}
@@ -126,7 +127,11 @@ export default function HomeDash() {
           </TouchableOpacity>
         </View>
         <View>
-          <Text style={style.errorMessage}>{errorMessage}</Text>
+          <Text
+            style={style.errorMessage}
+          >
+            {errorMessage}
+          </Text>
         </View>
         {userLocations.length !== 0 && 
           <LocationList title="Your locations" locations={userLocations} />

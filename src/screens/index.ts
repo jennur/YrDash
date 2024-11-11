@@ -1,7 +1,7 @@
-import HomeDash from './HomeDash/HomeDash';
+import Home from './Home/Home';
 import LocationDetails from './LocationDetails/LocationDetails';
 
 export {
-  HomeDash,
+  Home,
   LocationDetails,
 };
