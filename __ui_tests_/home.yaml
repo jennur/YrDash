@@ -1,0 +1,52 @@
+appId: org.reactjs.native.example.YrDash
+---
+- launchApp
+
+
+# Test the empty search gives an error message
+- tapOn:
+    id: "searchButton" # Tap the search button without entering a city
+- assertVisible:
+    text: "Please provide a location to search" # Expect to see the error message
+- extendedWaitUntil:
+    notVisible: 
+        text: "Please provide a location to search"
+    timeout: 5000 # Expect the error message to disappear after 5 seconds
+
+
+# Test that a valid search adds the location to the list
+- tapOn:
+    id: "cityInput"
+- inputText:
+    id: "cityInput"
+    text: "Trondheim"
+- tapOn:
+    id: "searchButton"
+- extendedWaitUntil:
+    visible:
+        id: "locationListItemText-trondheim"
+    timeout: 500 # Make sure the UI has updated
+
+- longPressOn:
+    id: "cityInput"
+- tapOn: "Select All"
+- eraseText
+
+# Repeat the same search to test that it returns an error message
+- inputText:
+    id: "cityInput"
+    text: "Trondheim"
+- tapOn:
+    id: "searchButton"
+- assertVisible:
+    text: "This location is already in your list" # Expect to see the error message
+- extendedWaitUntil:
+    notVisible: 
+        text: "This location is already in your list"
+    timeout: 5000 # Expect the error message to disappear after 5 seconds
+
+# Test that tapping on a location in the list opens the details screen
+- tapOn:
+    id: "locationListItemText-trondheim"
+- assertVisible: 
+    id: "locationDetailsScreen"

@@ -13,7 +13,11 @@ export default function PageHeader({title}: {title: string}) {
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+          testID="backButton"
+        >
           <Text>{"\<"}</Text>
         </TouchableOpacity>
       </View>

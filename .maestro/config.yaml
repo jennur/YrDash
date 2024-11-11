@@ -1,0 +1,2 @@
+flows:
+  - "__ui_tests__/*"

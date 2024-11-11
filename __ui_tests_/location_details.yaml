@@ -1,0 +1,41 @@
+appId: org.reactjs.native.example.YrDash
+---
+- launchApp
+
+# Navigate to location details
+- assertVisible:
+    id: "locationListItemText-london"
+- tapOn: 
+    id: "locationListItemText-london"
+
+# Test that the location details screen is visible
+- assertVisible: 
+    id: "locationDetailsScreen"
+
+# Test that the location details screen contains the expected elements
+- assertVisible:
+    text: "london"
+- assertVisible:
+    id: "weatherSymbol"
+- assertVisible:
+    id: "temperatureCurrent"
+- assertVisible:
+    id: "temperatureHigh"
+- assertVisible:
+    id: "temperatureLow"
+- assertVisible:
+    id: "weatherDetailTitle-Sunrise"
+- assertVisible:
+    id: "weatherDetailTitle-Sunset"
+- assertVisible:
+    id: "weatherDetailTitle-Humidity"
+- assertVisible:
+    id: "weatherDetailTitle-Air Pressure"
+
+# Test that the back button navigates back to the home screen
+- assertVisible:
+    id: "backButton"
+- tapOn: 
+    id: "backButton"
+- assertVisible:
+    id: "homeScreen"

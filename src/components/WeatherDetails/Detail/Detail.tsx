@@ -10,7 +10,7 @@ import styles from './Detail.styles';
 export default function Detail({title, value, unit}: TDetailProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title} testID={`weatherDetailTitle-${title}`}>{title}</Text>
       <Text style={styles.value}>{value}{unit && unit}</Text>
     </View>
   )

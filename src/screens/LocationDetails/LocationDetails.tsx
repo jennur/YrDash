@@ -16,7 +16,7 @@ export default function LocationDetails({route}: {route: TLocationDetailsRoutePr
   const {location}: {location: TLocation} = route.params;
 
   return (
-    <SafeAreaView style={screenStyles.screenWrapper}>
+    <SafeAreaView style={screenStyles.screenWrapper} testID="locationDetailsScreen">
       <View style={screenStyles.contentWrapper}>
         <PageHeader title={location.title} />
       </View>

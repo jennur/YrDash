@@ -111,9 +111,9 @@ export default function HomeDash() {
   }, [])
 
   return (
-    <SafeAreaView style={screenStyles.screenWrapper}>
+    <SafeAreaView style={screenStyles.screenWrapper} testID="homeScreen">
       <ScrollView style={screenStyles.contentWrapper}>
-        <View style={style.searchBar}>
+        <View style={style.searchBar} testID="searchBar">
           <TextInput
             style={style.searchInput}
             onChangeText={handleCityInput}
@@ -122,6 +122,7 @@ export default function HomeDash() {
           <TouchableOpacity
             onPress={addUserLocation}
             style={style.searchButton}
+            testID="searchButton"
           >
             <Text style={style.searchButtonText}>Search</Text>
           </TouchableOpacity>
