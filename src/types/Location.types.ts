@@ -1,7 +1,7 @@
 import { RESPONSE_ERROR, RESPONSE_SUCCESS } from "../constants/status.constants";
 
 export type TCity = "trondheim" | "oslo" | "bergen" | "stavanger" | "kristiansand" | "tromsø" | "bodø" | "ålesund" | "berlin" | "paris" | "london" | "new york" | "los angeles" | "san francisco" | "tokyo" | "beijing";
-export type TLatLong = [number, number];
+export type TLatLong = [number | null, number | null];
 
 export type TLocation = {
   units: {
@@ -32,3 +32,6 @@ export type TLocationResponse = {
   data: TLocation;
 }
 
+export function isLocationResponse(data: TLocationResponse | Error): data is TLocationResponse {
+  return (data as TLocationResponse).data !== undefined;
+}

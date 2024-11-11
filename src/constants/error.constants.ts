@@ -1,0 +1,1 @@
+export const INVALID_LOCATION = "Please enter a valid location";

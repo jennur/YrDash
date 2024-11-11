@@ -8,9 +8,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 import LocationList from '../../components/LocationList/LocationList';
-import { TLocation, TLocationResponse } from '../../types/Location.types';
+import { isLocationResponse, TLocation, TLocationResponse } from '../../types/Location.types';
 import { screenStyles } from '../../assets/styles/screen.styles';
-import { getCurrentWeather } from '../../services/weather.service';
+import { getCurrentWeather } from '../../services/weatherService/weatherService';
 import { TCity } from '../../types/Location.types';
 
 import style from './HomeDash.styles';
@@ -59,11 +59,12 @@ export default function HomeDash() {
       setUserLocations(storedUserLocations);
 
       // Get default locations
-      const locationResponse: TLocationResponse[] = await Promise.all(
-        defaultCities.map((name: TCity) => getCurrentWeather(name))
-      );
-      const locationData: TLocation[] = locationResponse.map(
-        (location: TLocationResponse) => location.data
+      const locationData: TLocation[] = await Promise.all(
+        defaultCities.map(async (name: TCity) => {
+          const weatherData: TLocationResponse | Error = await getCurrentWeather(name);
+          if (isLocationResponse(weatherData)) return weatherData.data;
+          else throw new Error("Unable to retrieve default location data");
+        })
       );
 
       setDefaultLocations(locationData);
@@ -76,17 +77,20 @@ export default function HomeDash() {
   const addUserLocation = async (): Promise<void> => {
     setErrorMessage("");
 
+    if (!city) return setErrorWithTimeout("Please provide a location to search");
+
     try {
       const alreadyListed = userLocations.find(location => location.title === city);
 
-      if (alreadyListed) {
-        setErrorWithTimeout("This location is already in your list");
-        return;
-      }
+      if (alreadyListed) return setErrorWithTimeout("This location is already in your list");
 
       // Fetch and add user provided location to the UI, store it locally
       const userLocation = await getCurrentWeather(city);
+
+      if (userLocation instanceof Error) return setErrorWithTimeout(userLocation.message);
+
       const updatedUserLocations = [userLocation?.data, ...userLocations];
+
       setUserLocations(updatedUserLocations);
       storeLocalData(USER_LOCATIONS_KEY, updatedUserLocations);
     } catch (error) {
@@ -110,7 +114,10 @@ export default function HomeDash() {
     <SafeAreaView style={screenStyles.screenWrapper}>
       <ScrollView style={screenStyles.contentWrapper}>
         <View style={style.searchBar}>
-          <TextInput style={style.searchInput} onChangeText={handleCityInput}/>
+          <TextInput
+            style={style.searchInput}
+            onChangeText={handleCityInput}
+          />
           <TouchableOpacity
             onPress={addUserLocation}
             style={style.searchButton}
