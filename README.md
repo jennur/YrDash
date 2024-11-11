@@ -94,3 +94,26 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+
+# Approach
+1. Defined the base structure for the project by organizing the different parts (screens, components, services, utils, ...) into different files and folders. I also added the skeleton for the screens and components by using some mock data. 
+2. Implemented the fetching of the actual data from the API and parsed the response to align with the defined structure. I had to adjust the type for the `LocationList` (`TLocationSummary[]` -> `TLocation[]`) slightly to avoid having to make multiple calls for the already retrieved data.
+3. Added styling for the different screens and components.
+4. Added unit tests with Jest.
+5. Added UI tests with Maestro.
+
+# Possible improvements
+- To keep a cleaner git log I see that I could've made smaller commits and e.g. 
+   - separated styling from other commits.
+   - kept the local storage implementation as a separate commit, as well as the implementation of the default/user location functions.
+   - kept the implementation of the `getCurrentWeather` function and the data parsing as a separate commit.
+- Rename some of the components (e.g. `Detail` -> `WeatherDetail` and `ListItem` -> `LocationListItem`) to make the responsibility more clear.
+- As of now there is no limit to how many recent user locations are being stored/displayed, and this should probably be limited to a smaller number.
+- The sunrise/sunset hours should be displayed in local time, and not in UTC.
+- In the `Temperature` component I'm assuming that the temperature is either 'celsius' or 'farenheit', which is probably a valid assumption to make, but it should anyway be confirmed.
+- Instead of passing down the `TLocation` object with a separate property for the units, I could've included the unit in the actual value during the data parsing.
+- To make sure the incoming data from the API is as expected, the response should be typed.
+- To make the application more flexible, I could've used a geocoding API to get the lat/long coordinates for any location, and have it not be limited to the hardcoded values in `nameToGeoCoords`.
+- Add more unit tests, e.g. for the utils functions
+- ...
