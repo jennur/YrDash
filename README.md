@@ -2,73 +2,90 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Note**: Make sure you have completed the [React Native - Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) instructions. This app currently only supports iOS, so you only need to follow the iOS steps to get started.
 
-## Step 1: Start the Metro Server
+This application uses the [Locationforecast API](https://api.met.no/weatherapi/locationforecast/2.0/documentation) and [Sunrise API](https://api.met.no/weatherapi/sunrise/3.0/documentation) provided by met.no to retrieve weather data.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## 1: Install dependencies
+Before you can start the application, you'll need to make sure all dependencies are installed.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+Firstly, you need to make sure you have the correct node version:
+```bash
+node --version
+# v23.1.0
+```
+
+If the node version is matching the one defined in `package.json` (`v23.1.0`), you should be able to install and run the application seamlessly. From the root folder, run
+```bash
+npm i
+```
+
+This will install all the dependencies defined in `package.json` into the `node_modules` folder.
+
+You will also need to install the pods for iOS. To do this, navigate to the `ios` folder in the terminal, and run
+```bash
+pod install
+```
+
+> **Note:** if you install new npm packages you may need to run `pod install` from the `ios` folder for the iOS project to be updated accordingly.
+
+## 2: Run the application
+
+To run the application, open a new terminal in the root folder of the project and run
 
 ```bash
-# using npm
 npm start
-
-# OR using Yarn
-yarn start
 ```
 
-## Step 2: Start your Application
+When prompted, type `i` in the same terminal to run the iOS simulator. The simulator should open automatically. If not, you can open it through Xcode by navigating to `Xcode -> Open Developer Tool -> Simulator` and rerun `npm start` in the terminal.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+Wait for the build to finish and the application to open in the simulator.
 
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
 ## Step 3: Modifying your App
 
-Now that you have successfully run the app, let's modify it.
+Now that you have successfully run the app, you can proceed with making the desired changes.
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+If the changes are not showing automatically, you can reload the app by typing `r` in the terminal where the app is running from, or hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in the iOS Simulator.
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+## Running tests
 
-## Congratulations! :tada:
+### Unit tests
+The unit tests in this project are implemented using [Jest](https://jestjs.io/docs/getting-started) and located in the same folder as the respective units to be tested.
 
-You've successfully run and modified your React Native App. :partying_face:
+To run the unit tests you can run `npm run test` from the root folder. Jest will look for files with the filename ending `.test.ts` within the `src` folder, as defined in `jest.config.js`.
 
-### Now what?
+### UI tests
+The UI tests are implemented with [Maestro](https://maestro.mobile.dev/) and located in `__ui_tests__/`.
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+#### Install Maestro
+Before you run these tests, make sure to install Maestro:
+
+```bash
+curl -fsSL "https://get.maestro.mobile.dev" | bash
+
+# OR if you prefer using Homebrew (macOS)
+brew tap mobile-dev-inc/tap
+brew install maestro
+```
+> For more details, see the [Maestro docs](https://maestro.mobile.dev/getting-started/installing-maestro).
+
+#### Run UI tests
+When Maestro is installed, after running the application (`npm start`), open a new terminal and navigate to the `__ui_tests__` folder. From here you can run the tests with the following command:
+```bash
+# $filename can be one of the following:
+# home               - tests for the Home screen
+# location_details   - tests for the LocationDetails screen
+maestro test $filename.yaml
+```
 
 # Troubleshooting
 
 If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
 
 # Learn More
+
+If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
 
 To learn more about React Native, take a look at the following resources:
 
